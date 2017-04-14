@@ -11,8 +11,10 @@
 *Voila ! Page still loads.* ``sw.js`` is where the magic is!
 
 There are multiple strategies one can implelment - network first, cache first, fastest first (race between network and cache). The choice depends on the type of application and situation one is trying to handle.
+
+This application demonstrates:
 - Cache First strategy
-- Cached API calls have a *max age*
+- Cached API calls have a *max age* - we don't want to server the same thing all life, right!
 - Version controlled cache - updates on any change to sw.js
 
 I have tried to use cache first for API calls, and cache all the time for static assets. The API calls are cached for 5 minutes.
@@ -24,7 +26,7 @@ References:
 - [developers.google.com](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers)
 
 
-### Building
+#### Building
 
 1. Install [Yarn](https://github.com/yarnpkg/yarn/)
 
@@ -37,7 +39,7 @@ References:
   $ yarn install
   ```
 
-### Running
+#### Running
 
 ```sh
 npm run serve
@@ -46,5 +48,6 @@ npm run serve
 The server will be running at:
 > [http://localhost:8000/](http://localhost:8000/)
 
-##### Catch
-This is an experimental technology by google and has not been standardised yet. Works only on Chrome and Firefox. IE is on the way to adapting it. Safari has given hints about it.
+#### Catch
+- This is an experimental technology by google and has not been standardised yet. Works only on Chrome and Firefox. IE is on the way to adapting it. Safari has given hints about it.
+- The cache storage used by service workers do not get deleted by browser unlike browser cache, who have no reliability. So it is important to delete stale objects.
