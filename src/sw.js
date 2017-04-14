@@ -27,7 +27,7 @@ internals.SUGGEST_API_LIST = [
 
 // *********************************************************************************
 // *********************************************** LOGIC FOR CACHE FIRST STRATEGY **
-internals.cacheFirstStrategy = function (request, now, url) {
+internals.cacheFirstStrategy = function (request, now, url, CACHE_NAME) {
   return caches.match(request).then(function(response) {
     if (response) {
       if ((now - internals.LRUCache[url.pathname + url.search]) < internals.API_CACHE_TIME) {
@@ -37,7 +37,7 @@ internals.cacheFirstStrategy = function (request, now, url) {
 
     return fetch(request).then(function(response) {
       internals.LRUCache[url.pathname + url.search] = now;
-      caches.open(internals.API_CACHE_NAME).then(function(cache) {
+      caches.open(CACHE_NAME).then(function(cache) {
         cache.put(request, response);
       });
 
@@ -74,11 +74,11 @@ self.addEventListener('fetch', function(event) {
 
   if (internals.CACHE_API_LIST.indexOf(requestURL.pathname) >= 0) {
     event.respondWith(
-      internals.cacheFirstStrategy(event.request, now, requestURL)
+      internals.cacheFirstStrategy(event.request, now, requestURL, internals.API_CACHE_NAME)
     );
   } else if (internals.SUGGEST_API_LIST.indexOf(requestURL.pathname.split('?')[0]) >= 0) {
     event.respondWith(
-      internals.cacheFirstStrategy(event.request, now, requestURL)
+      internals.cacheFirstStrategy(event.request, now, requestURL, internals.SUGGEST_CACHE_NAME)
     );
   } else if (internals.CACHE_FILE_LIST.indexOf(requestURL.href) >= 0) {
     event.respondWith(
