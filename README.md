@@ -1,5 +1,5 @@
 ## Service Worker Demo
-[![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/AmitM30/basic-service-worker/master/LICENSE)
+[![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/AmitM30/basic-service-worker/master/LICENSE) [![Code Climate](https://codeclimate.com/github/AmitM30/basic-service-worker/badges/gpa.svg)](https://codeclimate.com/github/AmitM30/basic-service-worker)
 
 **Get up and running with service worker for your site in less than 5 mins.**
 
