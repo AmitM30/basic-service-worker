@@ -52,16 +52,16 @@ gulp.task('html', function () {
     'src/index.html',
   ])
   .pipe(plugins.swig({ defaults: { cache: false } }))
-//   .pipe(plugins.htmlmin({
-//     collapseBooleanAttributes: true,
-//     collapseWhitespace: true,
-//     minifyJS: true,
-//     removeAttributeQuotes: true,
-//     removeComments: true,
-//     removeEmptyAttributes: true,
-//     removeOptionalTags: true,
-//     removeRedundantAttributes: true,
-//   }))
+  .pipe(plugins.htmlmin({
+    collapseBooleanAttributes: true,
+    collapseWhitespace: true,
+    minifyJS: true,
+    removeAttributeQuotes: true,
+    removeComments: true,
+    removeEmptyAttributes: true,
+    removeOptionalTags: true,
+    removeRedundantAttributes: true,
+  }))
   .pipe(gulp.dest('dist'))
   .pipe(reload({ stream: true }));
 });
@@ -161,7 +161,7 @@ gulp.task('build-images', function () {
 gulp.task('export-service-worker', function () {
   return gulp.src(['./src/sw.js'])
     .pipe(replace('-v1', '-v1-' + random))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('dist/'));
 });
 
