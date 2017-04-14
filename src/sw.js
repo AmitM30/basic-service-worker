@@ -26,10 +26,8 @@ internals.SUGGEST_API_LIST = [
 ];
 
 // *********************************************************************************
-// *********************************************************** LOGIC TO CACHE API **
-internals.cacheAPIResponse = function (request) {
-  var now = (new Date()).getTime();
-  var url = new URL(request.url);
+// *********************************************** LOGIC FOR CACHE FIRST STRATEGY **
+internals.cacheFirstStrategy = function (request, now, url) {
   return caches.match(request).then(function(response) {
     if (response) {
       if ((now - internals.LRUCache[url.pathname + url.search]) < internals.API_CACHE_TIME) {
@@ -49,32 +47,11 @@ internals.cacheAPIResponse = function (request) {
 };
 
 // *********************************************************************************
-// *********************************************** LOGIC TO CACHE SUGGEST RESULTS **
-internals.cacheSuggestResponse = function (request) {
-  var now = (new Date()).getTime();
-  var url = new URL(request.url);
-  return caches.match(request).then(function(response) {
-    if (response) {
-      if ((now - internals.LRUCache[url.pathname + url.search]) < internals.SUGGEST_CACHE_TIME) {
-        return response;
-      }
-    }
-
-    return fetch(request).then(function(response) {
-      internals.LRUCache[url.pathname + url.search] = now;
-      caches.open(internals.SUGGEST_CACHE_NAME).then(function(cache) {
-        cache.put(request, response);
-      });
-
-      return response.clone();
-    });
-  });
-};
-
-// *********************************************************************************
 // ************************************************* LOGIC TO CACHE STATIC ASSETS **
 internals.cacheStaticAssets = function (request) {
   return caches.match(request).then(function(response) {
+    // reject 'opaque' requests, as the assets must have
+    // 'Access-Control-Allow-Origin' header to be served by sw
     if (response && response.type !== 'opaque') { return response; }
 
     return fetch(request).then(function(response) {
@@ -93,14 +70,15 @@ internals.cacheStaticAssets = function (request) {
 // response with cache first if in the list, else regular fetch
 self.addEventListener('fetch', function(event) {
   var requestURL = new URL(event.request.url);
+  var now = (new Date()).getTime();
 
   if (internals.CACHE_API_LIST.indexOf(requestURL.pathname) >= 0) {
     event.respondWith(
-      internals.cacheAPIResponse(event.request)
+      internals.cacheFirstStrategy(event.request, now, requestURL)
     );
   } else if (internals.SUGGEST_API_LIST.indexOf(requestURL.pathname.split('?')[0]) >= 0) {
     event.respondWith(
-      internals.cacheSuggestResponse(event.request)
+      internals.cacheFirstStrategy(event.request, now, requestURL)
     );
   } else if (internals.CACHE_FILE_LIST.indexOf(requestURL.href) >= 0) {
     event.respondWith(
@@ -122,11 +100,6 @@ self.addEventListener('install', function(event) {
       caches.open(internals.STATIC_CACHE_NAME).then(function(cache) {
         return cache.addAll(internals.CACHE_FILE_LIST);
       })
-      // caches.open(internals.API_CACHE_NAME).then(function(cache) {
-      //   var now = (new Date()).getTime();
-      //   internals.CACHE_API_LIST.forEach(function(api) { internals.LRUCache[api] = now; }, this);
-      //   return cache.addAll(internals.CACHE_API_LIST);
-      // })
     ])
     .then(function () {
       // At this point everything has been cached

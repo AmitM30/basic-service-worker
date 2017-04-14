@@ -17,29 +17,26 @@ limitations under the License.
 -->
 
 {% extends 'base.html' %}
-{% block title %}Service Workers - Get Up and Running{% endblock %}
+{% block title %}Service Workers - An Introduction{% endblock %}
 
 {% block body %}
   <header class="site-header">
-    <h2>
-        Service Workers - Demonstration
-    </h2>
+    <h2 class="site-width-container">Service Workers - Demonstration</h2>
+  </header>
+  <div class="page-content site-width-container">
     <div>
+        <div>Ready for some Magic !</div>
         <ul>
             <li>Load the page</li>
             <li>Turn Wi-Fi / Internet off</li>
             <li>Reload the page</li>
         </ul>
-        <div><i>Voila!</i> Page still loads including the image and custom font.</div>
+        <div class="instructions"><i>Voila!</i><br /><span>Page still loads including the image and custom font.</span></div>
     </div>
     <br />
     <div>
         <img src="images/iron_man.jpg" alt="There's no beating iron man'" />
-        <small>(who can stop Iron man anyways)</small>
+        <small>who can stop Iron Man anyways - Power to you !</small>
     </div>
-  </header>
-  <div class="msg-container">
-    <div class="msg"></div>
   </div>
-  <div class="photos"></div>
 {% endblock %}

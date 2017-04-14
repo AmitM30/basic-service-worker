@@ -8,13 +8,13 @@
 - Turn Wi-Fi / Internet off
 - Reload the page
 
-*Voila ! Page still loads.* ``sw.js`` is where the magic is!
+*Voila !* Page still loads. ```src/sw.js``` is where the Magic is!
 
 There are multiple strategies one can implelment - network first, cache first, fastest first (race between network and cache). The choice depends on the type of application and situation one is trying to handle.
 
 This application demonstrates:
 - Cache First strategy
-- Cached API calls have a *max age* - we don't want to server the same thing all life, right!
+- Cached API calls have a *max age* - we don't want to serve the same thing all life, right!
 - Version controlled cache - updates on any change to sw.js
 
 I have tried to use cache first for API calls, and cache all the time for static assets. The API calls are cached for 5 minutes.

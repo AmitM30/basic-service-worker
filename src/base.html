@@ -28,7 +28,6 @@ limitations under the License.
   </head>
   <body>
     {% block body %}{% endblock %}
-    <!--<script src="/app.bundle.js"></script>-->
     <script>
         if ('serviceWorker' in window.navigator) {
             window.navigator.serviceWorker.register('sw.js', { scope: '/basic-service-worker/' }).then(function (reg) {

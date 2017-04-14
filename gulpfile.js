@@ -30,12 +30,13 @@ var hbsfy = require('hbsfy');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var replace = require('gulp-replace');
+var del = require('del');
 
 var reload = browserSync.reload;
 var random = Math.random().toString(36).substr(2, 7);
 
 gulp.task('clean', function (done) {
-  require('del')(['dist'], done);
+  del(['dist'], done);
 });
 
 gulp.task('browser-sync', function() {
@@ -49,7 +50,7 @@ gulp.task('browser-sync', function() {
 
 gulp.task('html', function () {
   return gulp.src([
-    'src/index.html',
+    'src/index.html'
   ])
   .pipe(plugins.swig({ defaults: { cache: false } }))
   .pipe(plugins.htmlmin({
@@ -60,7 +61,7 @@ gulp.task('html', function () {
     removeComments: true,
     removeEmptyAttributes: true,
     removeOptionalTags: true,
-    removeRedundantAttributes: true,
+    removeRedundantAttributes: true
   }))
   .pipe(gulp.dest('dist'))
   .pipe(reload({ stream: true }));
@@ -177,14 +178,6 @@ gulp.task('watch', ['build'], function () {
   gulp.watch(['src/*.html'], ['html']);
   gulp.watch(['src/**/*.scss'], ['css']);
   gulp.watch(['src/images/**/*.*'], ['build-images']);
-
-//   Object.keys(bundlers).forEach(function(key) {
-//     var watchifyBundler = watchify(bundlers[key]);
-//     watchifyBundler.on('update', function() {
-//       return bundle(watchifyBundler, key);
-//     });
-//     bundle(watchifyBundler, key);
-//   });
 });
 
 gulp.task('build', function() {
