@@ -24,7 +24,6 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.4",
     "gulp-replace": "^0.5.4",
-    "handlebars": "^3.0.1",
     "hbsfy": "^2.2.1",
     "merge-stream": "^0.1.7",
     "run-sequence": "^1.0.2",
