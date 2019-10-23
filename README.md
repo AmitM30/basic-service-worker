@@ -23,26 +23,6 @@ References:
 - Good old [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
 - [developers.google.com](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers)
 
-
-#### Building
-
-1. Install [Yarn](https://github.com/yarnpkg/yarn/)
-
-  ```shell
-  $ npm install -g yarn
-  ```
-
-2. Installing App
-  ```shell
-  $ yarn install
-  ```
-
-#### Running
-
-```sh
-npm run serve
-```
-
 The server will be running at:
 > [http://localhost:8000/](http://localhost:8000/)
 
