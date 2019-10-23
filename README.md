@@ -23,9 +23,6 @@ References:
 - Good old [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
 - [developers.google.com](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers)
 
-The server will be running at:
-> [http://localhost:8000/](http://localhost:8000/)
-
 #### Catch
 - This is an experimental technology by google and has not been standardised yet. Works only on Chrome and Firefox. IE is on the way to adapting it. Safari has given hints about it.
 - The cache storage used by service workers do not get deleted by browser unlike browser cache, who have no reliability. So it is important to delete stale objects.
