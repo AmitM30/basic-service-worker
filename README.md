@@ -10,11 +10,11 @@
 
 *Voila !* Page still loads. ```src/sw.js``` is where the Magic is!
 
-There are multiple strategies one can implelment - network first, cache first, fastest first (race between network and cache). The choice depends on the type of application and situation one is trying to handle.
+There are multiple strategies one can implelment - network first, cache first, fastest first (race between network and cache). The choice depends upon the type of application and the situation one is trying to handle.
 
 This application demonstrates:
-- Cache First strategy
-- Cached API calls have a *max age* - we don't want to serve the same thing all life, right!
+- Cache First strategy - i.e. serve from service worker cache if available
+- Cached API calls have a *max age* - we don't want to serve the same thing all life!
 - Version controlled cache - updates on any change to sw.js
 
 I have tried to use cache first for API calls, and cache all the time for static assets. The API calls are cached for 5 minutes.

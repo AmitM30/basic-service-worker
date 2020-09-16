@@ -2,14 +2,14 @@
 var self                      = this;
 
 var internals                 = {};
-internals.LRUCache            = {};             // Object to maintain timestamp for request urls
+internals.LRUCache            = {};             // To maintain timestamp for request urls
 
 internals.STATIC_CACHE_NAME   = 'static-v1';
 internals.API_CACHE_NAME      = 'api-v1';
 internals.SUGGEST_CACHE_NAME  = 'suggest-v1';
 
-internals.SUGGEST_CACHE_TIME  = 60 * 5 * 1000;  // in seconds
-internals.API_CACHE_TIME      = 60 * 5 * 1000;  // in seconds
+internals.SUGGEST_CACHE_TIME  = 60 * 5 * 1000;  // 300 seconds
+internals.API_CACHE_TIME      = 60 * 5 * 1000;  // 300 seconds
 
 internals.CACHE_FILE_LIST = [
   'fonts/proximanova-regular-webfont.woff2',
@@ -26,7 +26,7 @@ internals.SUGGEST_API_LIST = [
 ];
 
 // *********************************************************************************
-// *********************************************** LOGIC FOR CACHE FIRST STRATEGY **
+// *********************** LOGIC FOR CACHE FIRST STRATEGY **************************
 internals.cacheFirstStrategy = function (request, now, url, CACHE_NAME) {
   return caches.match(request).then(function(response) {
     if (response) {
@@ -65,7 +65,7 @@ internals.cacheStaticAssets = function (request) {
 };
 
 // *********************************************************************************
-// ************************************************************************ FETCH **
+// ************************************ FETCH **************************************
 // Listen for all `fetch` event from the application
 // response with cache first if in the list, else regular fetch
 self.addEventListener('fetch', function(event) {
@@ -92,7 +92,7 @@ self.addEventListener('fetch', function(event) {
 });
 
 // *********************************************************************************
-// ********************************************************************** INSTALL **
+// ********************************** INSTALL **************************************
 // Place to instantiate the SW with pre-cached list of assets / endpoints
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -114,7 +114,7 @@ self.addEventListener('install', function(event) {
 });
 
 // *********************************************************************************
-// ********************************************************************* ACTIVATE **
+// ********************************** ACTIVATE *************************************
 // Place to clean up old version of cache
 self.addEventListener('activate', function(event) {
   if (self.clients && clients.claim) {
