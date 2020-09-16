@@ -4,13 +4,10 @@ var self                      = this;
 var internals                 = {};
 internals.LRUCache            = {};             // To maintain timestamp for request urls
 
-internals.STATIC_CACHE_NAME   = 'static-v1';
-internals.API_CACHE_NAME      = 'api-v1';
-internals.SUGGEST_CACHE_NAME  = 'suggest-v1';
-
-internals.SUGGEST_CACHE_TIME  = 60 * 5 * 1000;  // 300 seconds
-internals.API_CACHE_TIME      = 60 * 5 * 1000;  // 300 seconds
-
+/**
+ * These are the list of files / endpoints to be cached by the service worker
+ * ******************************* STARTS ***********************************
+ */
 internals.CACHE_FILE_LIST = [
   'fonts/proximanova-regular-webfont.woff2',
   'styles/site.css',
@@ -18,15 +15,26 @@ internals.CACHE_FILE_LIST = [
 ];
 
 internals.CACHE_API_LIST = [
-  '/'
-];
-
-internals.SUGGEST_API_LIST = [
+  '/api/v1/load',
   '/api/suggest'
 ];
 
-// *********************************************************************************
-// *********************** LOGIC FOR CACHE FIRST STRATEGY **************************
+/**
+ * ******************************** ENDS ***********************************
+ */
+
+internals.STATIC_CACHE_NAME   = 'static-v1';
+internals.API_CACHE_NAME      = 'api-v1';
+
+internals.API_CACHE_TIME      = 60 * 5 * 1000;  // 300 seconds
+
+/**
+ * Logic for cache first strategy
+ * @param {Request} request 
+ * @param {Date} now
+ * @param {URL} url 
+ * @param {string} CACHE_NAME 
+ */
 internals.cacheFirstStrategy = function (request, now, url, CACHE_NAME) {
   return caches.match(request).then(function(response) {
     if (response) {
@@ -46,8 +54,10 @@ internals.cacheFirstStrategy = function (request, now, url, CACHE_NAME) {
   });
 };
 
-// *********************************************************************************
-// ************************************************* LOGIC TO CACHE STATIC ASSETS **
+/**
+ * Logic to cache static assets
+ * @param {Request} request 
+ */
 internals.cacheStaticAssets = function (request) {
   return caches.match(request).then(function(response) {
     // reject 'opaque' requests, as the assets must have
@@ -64,10 +74,11 @@ internals.cacheStaticAssets = function (request) {
   });
 };
 
-// *********************************************************************************
-// ************************************ FETCH **************************************
-// Listen for all `fetch` event from the application
-// response with cache first if in the list, else regular fetch
+/**
+ * ************************************ FETCH **************************************
+ * Listen for all `fetch` event from the application
+ * response with cache first if in the list, else regular fetch
+ */
 self.addEventListener('fetch', function(event) {
   var requestURL = new URL(event.request.url);
   var now = (new Date()).getTime();
@@ -75,10 +86,6 @@ self.addEventListener('fetch', function(event) {
   if (internals.CACHE_API_LIST.indexOf(requestURL.pathname) >= 0) {
     event.respondWith(
       internals.cacheFirstStrategy(event.request, now, requestURL, internals.API_CACHE_NAME)
-    );
-  } else if (internals.SUGGEST_API_LIST.indexOf(requestURL.pathname.split('?')[0]) >= 0) {
-    event.respondWith(
-      internals.cacheFirstStrategy(event.request, now, requestURL, internals.SUGGEST_CACHE_NAME)
     );
   } else if (internals.CACHE_FILE_LIST.indexOf(requestURL.href) >= 0) {
     event.respondWith(
@@ -91,9 +98,10 @@ self.addEventListener('fetch', function(event) {
   }
 });
 
-// *********************************************************************************
-// ********************************** INSTALL **************************************
-// Place to instantiate the SW with pre-cached list of assets / endpoints
+/**
+ * ********************************** INSTALL **************************************
+ * Place to instantiate the SW with pre-cached list of assets / endpoints
+ */
 self.addEventListener('install', function(event) {
   event.waitUntil(
     Promise.all([
@@ -113,9 +121,10 @@ self.addEventListener('install', function(event) {
   );
 });
 
-// *********************************************************************************
-// ********************************** ACTIVATE *************************************
-// Place to clean up old version of cache
+/**
+ * ********************************** ACTIVATE *************************************
+ * Place to clean up old version of cache
+ */
 self.addEventListener('activate', function(event) {
   if (self.clients && clients.claim) {
     clients.claim();
