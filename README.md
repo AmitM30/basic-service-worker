@@ -43,8 +43,8 @@ References:
 
 ### Support
 
-Service Workers are not quite widely supported (except IE). Check [caniuse](https://caniuse.com/serviceworkers) for more detailed info
+Service Workers are now quite widely supported (except IE). Check [caniuse](https://caniuse.com/serviceworkers) for more detailed info.
 
 ### Catch
 
-The cache storage used by service workers do not get deleted by browser unlike browser cache, who have no reliability. So it is important to delete stale objects.
+The cache storage used by service workers do not get deleted by browser, ever, unlike browser cache, who have no reliability. So it is important to delete stale objects.
